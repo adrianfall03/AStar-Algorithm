@@ -1,5 +1,7 @@
 //set public data
-const mapSize = 20;
+const mapSize = 30;
+const mapHeight = mapSize*20;
+const mapWidth = mapSize*20;
 var boxDate = [];
 var openList=[];
 var closeList =[];
@@ -16,11 +18,15 @@ var funMove;
 
 
 // set selector
-const mapStrapper = document.querySelector('.mapStrapper');
+var mapStrapper = document.querySelector('.mapStrapper');
 const btnSetStart = document.querySelector('.setStart');
 const btnSeEnd = document.querySelector('.setEnd');
 const btnSetBarrier = document.querySelector('.setBarrierByRandom');
 const btnFindRoad = document.querySelector('.findRoad');
+mapStrapper.style.width =mapWidth+'px';
+mapStrapper.style.mapHeight = mapHeight+'px';
+console.log(mapWidth);
+console.log(mapHeight);
 
 
 //set class
@@ -144,8 +150,8 @@ class Astar{
                 break;
             }
              //check the box belong map
-            if(returnX >=0 &&returnY>=0 &&returnX<20 &&returnY<20 && i!=5){
-                let returnIndex = returnX+returnY*20;
+            if(returnX >=0 &&returnY>=0 &&returnX<mapSize &&returnY<mapSize && i!=5){
+                let returnIndex = returnX+returnY*mapSize;
                 //check the box round for set openlist and closeList
                  if(boxDate[returnIndex].state==2){
                     clearInterval(funMove);
@@ -170,8 +176,9 @@ class Astar{
             minID = i;
         }     
         }
-        //remove bug about having two yellow block on map
+        //remove bug about having two yellow block on map and need to consider the circumstance that box[endNode] maybe no display;
         boxDate[currentNode].refresh(4);
+        boxDate[startNode].refresh(1);
         //
         currentNode =  openList[minID].index ;
         openList.splice(minID,1);
@@ -247,6 +254,10 @@ for (let i = 0; i < mapSize; i++) {
 }
 }
 function drawMap(m){
+    //define the map size 
+    // mapStrapper.style.width =mapWidth;
+    // mapStrapper.style.height =mapHeight;
+    // create blocks 
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < m; j++) {
             const div = document.createElement('div');
